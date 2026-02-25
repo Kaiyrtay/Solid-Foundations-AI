@@ -1,0 +1,13 @@
+The Zen (Philosophy) of Python:
+    https://pep20.org/
+    
+Below are the materials I’ve reviewed:
+- Class : 
+    https://realpython.com/python-classes/
+- Inheritance: 
+    https://www.datacamp.com/tutorial/python-inheritance
+- Abstract Class
+    https://medium.com/@prashampahadiya9228/abstract-classes-and-abstract-methods-in-python-e632ea34bc79
+- Decorators: 
+    https://www.thepythoncodingstack.com/p/demystifying-python-decorators
+    https://realpython.com/primer-on-python-decorators/

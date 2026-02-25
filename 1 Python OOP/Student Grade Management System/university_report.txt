@@ -1,0 +1,129 @@
+============================================================
+  University: Grand Boston Polytechnic, Courses Offered: 4, Total Students: 20
+============================================================
+
+  Course: Psychology, Students Enrolled: 5, Class Average: 38.00
+------------------------------------------------------------
+    Name: Eva Smith, Age: 34, Average Grade: 43.92
+    Name: Isla Brown, Age: 72, Average Grade: 36.16
+    Name: Henry Anderson, Age: 50, Average Grade: 32.08
+    Name: Mia Harris, Age: 84, Average Grade: 35.85
+    Name: David Taylor, Age: 79, Average Grade: 41.99
+
+  Course: Psychology, Students Enrolled: 5, Class Average: 54.29
+------------------------------------------------------------
+    Name: Grace Clark, Age: 88, Average Grade: 45.02
+    Name: Eva Lewis, Age: 70, Average Grade: 62.20
+    Name: Bob Johnson, Age: 44, Average Grade: 65.38
+    Name: Henry Smith, Age: 82, Average Grade: 57.67
+    Name: Grace Harris, Age: 72, Average Grade: 41.15
+
+  Course: Biology, Students Enrolled: 5, Class Average: 62.89
+------------------------------------------------------------
+    Name: Karen Lewis, Age: 56, Average Grade: 67.20
+    Name: Frank Harris, Age: 75, Average Grade: 52.27
+    Name: Mia Lee, Age: 57, Average Grade: 73.68
+    Name: Mia Lewis, Age: 85, Average Grade: 39.33
+    Name: Peter Clark, Age: 35, Average Grade: 81.98
+
+  Course: History, Students Enrolled: 5, Class Average: 48.94
+------------------------------------------------------------
+    Name: Noah Harris, Age: 62, Average Grade: 52.94
+    Name: David Walker, Age: 48, Average Grade: 52.71
+    Name: Grace Taylor, Age: 50, Average Grade: 41.90
+    Name: Henry Anderson, Age: 94, Average Grade: 43.63
+    Name: Mia Harris, Age: 56, Average Grade: 53.53
+
+  Total Unique Students : 20
+  Top Student           : Name: Peter Clark, Age: 35, Average Grade: 81.98
+  Top 3 Students        :
+    1. Name: Peter Clark, Age: 35, Average Grade: 81.98
+    2. Name: Mia Lee, Age: 57, Average Grade: 73.68
+    3. Name: Karen Lewis, Age: 56, Average Grade: 67.20
+
+============================================================
+  University: East Dubai Polytechnic, Courses Offered: 4, Total Students: 20
+============================================================
+
+  Course: Physics, Students Enrolled: 5, Class Average: 49.86
+------------------------------------------------------------
+    Name: Mia Anderson, Age: 95, Average Grade: 43.78
+    Name: Isla Lee, Age: 26, Average Grade: 45.27
+    Name: Noah Lee, Age: 84, Average Grade: 47.86
+    Name: Karen Johnson, Age: 60, Average Grade: 60.45
+    Name: Peter Anderson, Age: 29, Average Grade: 51.95
+
+  Course: Economics, Students Enrolled: 5, Class Average: 46.15
+------------------------------------------------------------
+    Name: Mia Anderson, Age: 99, Average Grade: 54.23
+    Name: Isla Harris, Age: 70, Average Grade: 57.61
+    Name: Cara Smith, Age: 95, Average Grade: 36.40
+    Name: Alice Harris, Age: 77, Average Grade: 48.98
+    Name: Olivia Smith, Age: 82, Average Grade: 33.56
+
+  Course: Mathematics, Students Enrolled: 5, Class Average: 55.88
+------------------------------------------------------------
+    Name: Karen Harris, Age: 58, Average Grade: 37.42
+    Name: Alice Clark, Age: 38, Average Grade: 73.38
+    Name: Cara Lee, Age: 82, Average Grade: 59.41
+    Name: David Brown, Age: 91, Average Grade: 64.76
+    Name: Bob Lewis, Age: 33, Average Grade: 44.45
+
+  Course: Philosophy, Students Enrolled: 5, Class Average: 66.04
+------------------------------------------------------------
+    Name: Peter Lee, Age: 33, Average Grade: 66.67
+    Name: Henry Walker, Age: 75, Average Grade: 55.86
+    Name: Eva Smith, Age: 29, Average Grade: 85.50
+    Name: Leo Walker, Age: 98, Average Grade: 56.00
+    Name: Eva Brown, Age: 61, Average Grade: 66.20
+
+  Total Unique Students : 20
+  Top Student           : Name: Eva Smith, Age: 29, Average Grade: 85.50
+  Top 3 Students        :
+    1. Name: Eva Smith, Age: 29, Average Grade: 85.50
+    2. Name: Alice Clark, Age: 38, Average Grade: 73.38
+    3. Name: Peter Lee, Age: 33, Average Grade: 66.67
+
+============================================================
+  University: Grand Boston College, Courses Offered: 4, Total Students: 20
+============================================================
+
+  Course: History, Students Enrolled: 5, Class Average: 51.43
+------------------------------------------------------------
+    Name: Jack Brown, Age: 75, Average Grade: 49.76
+    Name: Isla Brown, Age: 89, Average Grade: 45.27
+    Name: Olivia Lee, Age: 82, Average Grade: 41.93
+    Name: Grace Smith, Age: 26, Average Grade: 65.87
+    Name: Peter Smith, Age: 17, Average Grade: 54.30
+
+  Course: Philosophy, Students Enrolled: 5, Class Average: 47.97
+------------------------------------------------------------
+    Name: Bob Lee, Age: 64, Average Grade: 41.61
+    Name: Olivia Johnson, Age: 72, Average Grade: 43.03
+    Name: Noah Brown, Age: 48, Average Grade: 53.14
+    Name: Jack Clark, Age: 72, Average Grade: 49.40
+    Name: Karen Johnson, Age: 58, Average Grade: 52.67
+
+  Course: Chemistry, Students Enrolled: 5, Class Average: 44.13
+------------------------------------------------------------
+    Name: David Taylor, Age: 95, Average Grade: 49.97
+    Name: Peter Johnson, Age: 29, Average Grade: 29.41
+    Name: Noah Brown, Age: 56, Average Grade: 44.00
+    Name: Leo Brown, Age: 41, Average Grade: 48.25
+    Name: Karen Harris, Age: 53, Average Grade: 48.99
+
+  Course: History, Students Enrolled: 5, Class Average: 47.77
+------------------------------------------------------------
+    Name: Henry Walker, Age: 88, Average Grade: 55.69
+    Name: Isla Clark, Age: 37, Average Grade: 47.70
+    Name: Mia Taylor, Age: 81, Average Grade: 19.21
+    Name: Noah Taylor, Age: 61, Average Grade: 54.48
+    Name: Jack Brown, Age: 99, Average Grade: 61.80
+
+  Total Unique Students : 20
+  Top Student           : Name: Grace Smith, Age: 26, Average Grade: 65.87
+  Top 3 Students        :
+    1. Name: Grace Smith, Age: 26, Average Grade: 65.87
+    2. Name: Jack Brown, Age: 99, Average Grade: 61.80
+    3. Name: Henry Walker, Age: 88, Average Grade: 55.69
+
