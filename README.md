@@ -12,10 +12,13 @@ AI and Data Engineer/
 ├── 1 Python OOP/
 │   ├── Student Grade Management System/   # Week 1
 │   │
-│   └── University Personnel Management System/
-│       ├── base.py        # Abstract Person base class
-│       ├── classes.py     # Staff, Teacher, Administrator, Security, Student, Undergraduate, Graduate
-│       └── init.py        # Entry point / test runner
+│   ├── University Personnel Management System/
+│   │   ├── base.py        # Abstract Person base class
+│   │   ├── classes.py     # Staff, Teacher, Administrator, Security, Student, Undergraduate, Graduate
+│   │   └── init.py        # Entry point / test runner
+│   │
+│   └── Week 2 - 3/
+│       └── vehicles.py    # Abstract Vehicle hierarchy, polymorphism, MRO
 │
 ├── The Zen of Python.txt
 └── requirements.txt
@@ -25,9 +28,17 @@ AI and Data Engineer/
 
 ## What I Built
 
+### University Personnel Management System
+
 Two-file hierarchy rooted in an abstract `Person` base class. `Staff` and `Student` inherit from it — `Staff` adds an abstract `get_salary()`, `Student` adds an abstract `calculate_tuition()`. Concrete subclasses (`Teacher`, `Administrator`, `Security`, `UndergraduateStudent`, `GraduateStudent`) handle their own implementations.
 
 Every attribute is private and rejects bad data before storing it — wrong type or invalid value raises an error immediately. Also checked the design against SOLID principles — found one bug where creating a GraduateStudent and updating their advisor had different rules, which meant the same object could end up in a state that should never be allowed. Fixed that. One remaining issue is that GraduateStudent is hardcoded to only accept a Teacher as advisor, meaning if a Professor class gets added later, the code breaks. Left it for now.
+
+### Vehicle Hierarchy
+
+Abstract `Vehicle` base class with `start()` and `stop()` as abstract methods and `get_mileage()` as a concrete getter. `Car`, `Motorcycle`, and `Truck` extend it. Mileage validation rejects non-numeric types, negatives, and booleans (`bool` is a subclass of `int` in Python so it needs an explicit guard).
+
+Also explored multiple inheritance and MRO through `Printable`, `Serializable`, and a `Report` class that inherits from both. Verified that Python resolves method lookup left-to-right through the MRO, so swapping the parent order in the class definition changes which `__str__` wins when no override is present.
 
 ---
 
@@ -56,4 +67,4 @@ Every attribute is private and rejects bad data before storing it — wrong type
 
 ## Next
 
-SOLID principle
+SOLID principles
