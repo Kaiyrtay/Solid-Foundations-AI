@@ -1,6 +1,6 @@
-# Week 1 — Python OOP Mastery
+# Week 2 — Inheritance, Abstract Classes & SOLID
 
-First week of the AI & Data Engineer journey. The focus was purely OOP — building a Student Management System from zero, one hour a day, Monday to Friday.
+Second week of the AI & Data Engineer journey. Still OOP — built the University Personnel Management System (Console Based) using inheritance and abstract base classes, then ran it through SOLID. Also started reading into what Python is actually doing under the hood.
 
 ---
 
@@ -10,15 +10,14 @@ First week of the AI & Data Engineer journey. The focus was purely OOP — build
 AI and Data Engineer/
 │
 ├── 1 Python OOP/
-│   ├── Student Grade Management System/
-│   │   ├── classes.py              # Student, Course, University
-│   │   ├── init.py                 # Entry point / test runner
-│   │   ├── university_data.json    # Generated output (structured)
-│   │   └── university_report.txt  # Generated output (human-readable)
+│   ├── Student Grade Management System/   # Week 1
 │   │
-│   └── materials.txt               # Reading articles / materials
+│   └── University Personnel Management System/
+│       ├── base.py        # Abstract Person base class
+│       ├── classes.py     # Staff, Teacher, Administrator, Security, Student, Undergraduate, Graduate
+│       └── init.py        # Entry point / test runner
 │
-├── The Zen of Python.txt           # PEP 20 notes
+├── The Zen of Python.txt
 └── requirements.txt
 ```
 
@@ -26,31 +25,35 @@ AI and Data Engineer/
 
 ## What I Built
 
-Three classes — `Student`, `Course`, and `University` — each with private attributes, validated getters/setters, and proper `__str__`/`__repr__`. The entry point generates 3 random universities with 4 courses and 5 students each, prints a full report, and saves it to both `.txt` and `.json`.
+Two-file hierarchy rooted in an abstract `Person` base class. `Staff` and `Student` inherit from it — `Staff` adds an abstract `get_salary()`, `Student` adds an abstract `calculate_tuition()`. Concrete subclasses (`Teacher`, `Administrator`, `Security`, `UndergraduateStudent`, `GraduateStudent`) handle their own implementations.
 
-Took me longer than I'd like to admit to understand that encapsulation isn't just about slapping double underscores on everything — it's about making sure the data you store is actually trustworthy. Also spent way too long staring at why `@property.setter` was crashing before realising the decorator needs the property name, not the word "property".
+Every attribute is private and rejects bad data before storing it — wrong type or invalid value raises an error immediately. Also checked the design against SOLID principles — found one bug where creating a GraduateStudent and updating their advisor had different rules, which meant the same object could end up in a state that should never be allowed. Fixed that. One remaining issue is that GraduateStudent is hardcoded to only accept a Teacher as advisor, meaning if a Professor class gets added later, the code breaks. Left it for now.
 
 ---
 
 ## Materials I Read
 
-**Philosophy**
+**SOLID**
 
-- [The Zen of Python — PEP 20](https://pep20.org/)
+- [SOLID Principles in Python — Real Python](https://realpython.com/solid-principles-python/#the-solid-design-principles-in-python)
+- [SOLID — YouTube](https://www.youtube.com/watch?v=pTB30aXS77U)
+- [SOLID — YouTube](https://www.youtube.com/watch?v=k9u40DxhTTk)
 
-**OOP**
+**Under the Hood**
 
-- [Python Classes — Real Python](https://realpython.com/python-classes/)
-- [Python Inheritance — DataCamp](https://www.datacamp.com/tutorial/python-inheritance)
-- [Abstract Classes — Medium](https://medium.com/@prashampahadiya9228/abstract-classes-and-abstract-methods-in-python-e632ea34bc79)
+- [File Management — Medium](https://medium.com/@ayushkalathiya50/file-management-in-python-6613c0b57a85)
+- [Garbage Collection — GeeksforGeeks](https://www.geeksforgeeks.org/python/garbage-collection-python/)
+- [Memory Management — GeeksforGeeks](https://www.geeksforgeeks.org/python/memory-management-in-python/)
+- [Does Python Have Pointers — Ned Batchelder](https://nedbatchelder.com/blog/202403/does_python_have_pointers)
+- [Python Variables Are Pointers — Medium](https://medium.com/analytics-vidhya/python-variables-are-pointers-not-containers-608644af9131)
 
-**Decorators**
+**Big O**
 
-- [Demystifying Decorators — The Python Coding Stack](https://www.thepythoncodingstack.com/p/demystifying-python-decorators)
-- [Primer on Decorators — Real Python](https://realpython.com/primer-on-python-decorators/)
+- [What Is Big O — Towards Data Science](https://towardsdatascience.com/what-is-big-o-notation-and-why-you-should-care-5638895a1693/)
+- [Big O Practical Guide — Medium](https://medium.com/@rozy.sinha2711/understanding-big-o-notation-a-practical-guide-for-developers-45fcbbb5e84b)
 
 ---
 
 ## Next
 
-Inheritance and Abstract Classes. Plan is to refactor with a base `Person` class and explore where `ABC` makes the design cleaner.
+SOLID principle

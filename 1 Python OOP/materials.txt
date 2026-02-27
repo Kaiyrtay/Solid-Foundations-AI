@@ -11,3 +11,21 @@ Below are the materials I’ve reviewed:
 - Decorators: 
     https://www.thepythoncodingstack.com/p/demystifying-python-decorators
     https://realpython.com/primer-on-python-decorators/
+
+##################### Week 2 #####################
+
+- File Management:
+    https://medium.com/@ayushkalathiya50/file-management-in-python-6613c0b57a85
+- SOLID principles:
+    https://realpython.com/solid-principles-python/#the-solid-design-principles-in-python
+    https://www.youtube.com/watch?v=pTB30aXS77U
+    https://www.youtube.com/watch?v=k9u40DxhTTk
+- Garbage Collection:
+    https://www.geeksforgeeks.org/python/garbage-collection-python/
+    https://www.geeksforgeeks.org/python/memory-management-in-python/
+- Var/pointers: 
+    https://nedbatchelder.com/blog/202403/does_python_have_pointers
+    https://medium.com/analytics-vidhya/python-variables-are-pointers-not-containers-608644af9131
+- Big O:
+    https://towardsdatascience.com/what-is-big-o-notation-and-why-you-should-care-5638895a1693/
+    https://medium.com/@rozy.sinha2711/understanding-big-o-notation-a-practical-guide-for-developers-45fcbbb5e84b
