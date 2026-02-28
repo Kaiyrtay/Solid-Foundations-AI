@@ -1,0 +1,33 @@
+(Level 1 - Claude AI)
+The Task — All 5 SOLID Principles, One System
+
+What you're building:
+A console-based Library Management System:
+frontend.py — wiring + console interaction.
+backend.py — all logic, zero console.
+
+What it must do:
+
+Add a book (title, author, year)
+Remove a book
+Save and load books from a file
+Show a report of all books
+Support multiple notification types when a book is added (email, SMS — console fakes are fine)
+Support multiple storage types (JSON file, CSV file)
+
+
+Where each principle lives:
+S — Every class has one job. Book data, file saving, report generation, notifications — all separate.
+O — Adding a new storage type (CSV) or new notification type (Slack) requires zero edits to existing classes.
+L — Any storage class can replace another without breaking anything. Any notifier can replace another without breaking anything.
+I — No class is forced to implement methods it doesn't need. Split your interfaces smart.
+D — Backend classes never hardcode their dependencies. Everything gets injected in.
+
+You pass when:
+
+backend.py has zero print() or input()
+frontend.py has zero business logic
+I can swap JSON storage for CSV storage with one line change
+I can add a new notifier without touching existing code
+Every class has exactly one reason to change
+

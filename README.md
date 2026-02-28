@@ -1,70 +1,122 @@
-# Week 2 — Inheritance, Abstract Classes & SOLID
+# Library Management System
 
-Second week of the AI & Data Engineer journey. Still OOP — built the University Personnel Management System (Console Based) using inheritance and abstract base classes, then ran it through SOLID. Also started reading into what Python is actually doing under the hood.
+### SOLID Principles in Python — Level 1 Challenge
 
 ---
 
-## Folder Structure
+## The Challenge
+
+This project was built as part of a competitive SOLID principles challenge.
+The task was designed and judged by Claude (Anthropic).
+
+### Task Requirements (as given):
+
+- Build a console-based Library Management System
+- Add, remove, save, load books
+- Support multiple storage types: JSON and CSV
+- Support multiple notification types: Email and SMS
+- Split into `backend.py` (zero console) and `frontend.py` (zero logic)
+- Every class must have one reason to change
+- Dependencies must be injected — nothing hardcoded
+
+---
+
+## SOLID Breakdown
+
+| Principle                     | Where it lives                                                             | How                                                                         |
+| ----------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| **S** — Single Responsibility | `Book`, `Library`, `ReportGenerator`, `LibraryService`, notifiers, storage | Every class has exactly one job                                             |
+| **O** — Open/Closed           | `FileManagement`, `NotificationService`                                    | Add `CSVFileManagement` or `SlackNotifier` with zero edits to existing code |
+| **L** — Liskov Substitution   | `CSVFileManagement`, `JSONFileManagement`                                  | Either storage swaps in without breaking anything                           |
+| **I** — Interface Segregation | `FileManagement`, `NotificationService`                                    | Interfaces are lean — no class implements what it doesn't need              |
+| **D** — Dependency Inversion  | `LibraryService`                                                           | Never hardcodes storage or notifier — both injected from frontend           |
+
+---
+
+## Project Structure
 
 ```
-AI and Data Engineer/
-│
-├── 1 Python OOP/
-│   ├── Student Grade Management System/   # Week 1
-│   │
-│   ├── University Personnel Management System/
-│   │   ├── base.py        # Abstract Person base class
-│   │   ├── classes.py     # Staff, Teacher, Administrator, Security, Student, Undergraduate, Graduate
-│   │   └── init.py        # Entry point / test runner
-│   │
-│   └── Week 2 - 3/
-│       └── vehicles.py    # Abstract Vehicle hierarchy, polymorphism, MRO
-│
-├── The Zen of Python.txt
-└── requirements.txt
+├── backend.py     # All logic — zero print(), zero input()
+├── frontend.py    # All console interaction — zero business logic
+└── README.md
 ```
 
 ---
 
-## What I Built
+## How to Run
 
-### University Personnel Management System
+```bash
+python frontend.py
+```
 
-Two-file hierarchy rooted in an abstract `Person` base class. `Staff` and `Student` inherit from it — `Staff` adds an abstract `get_salary()`, `Student` adds an abstract `calculate_tuition()`. Concrete subclasses (`Teacher`, `Administrator`, `Security`, `UndergraduateStudent`, `GraduateStudent`) handle their own implementations.
+### Menu:
 
-Every attribute is private and rejects bad data before storing it — wrong type or invalid value raises an error immediately. Also checked the design against SOLID principles — found one bug where creating a GraduateStudent and updating their advisor had different rules, which meant the same object could end up in a state that should never be allowed. Fixed that. One remaining issue is that GraduateStudent is hardcoded to only accept a Teacher as advisor, meaning if a Professor class gets added later, the code breaks. Left it for now.
-
-### Vehicle Hierarchy
-
-Abstract `Vehicle` base class with `start()` and `stop()` as abstract methods and `get_mileage()` as a concrete getter. `Car`, `Motorcycle`, and `Truck` extend it. Mileage validation rejects non-numeric types, negatives, and booleans (`bool` is a subclass of `int` in Python so it needs an explicit guard).
-
-Also explored multiple inheritance and MRO through `Printable`, `Serializable`, and a `Report` class that inherits from both. Verified that Python resolves method lookup left-to-right through the MRO, so swapping the parent order in the class definition changes which `__str__` wins when no override is present.
-
----
-
-## Materials I Read
-
-**SOLID**
-
-- [SOLID Principles in Python — Real Python](https://realpython.com/solid-principles-python/#the-solid-design-principles-in-python)
-- [SOLID — YouTube](https://www.youtube.com/watch?v=pTB30aXS77U)
-- [SOLID — YouTube](https://www.youtube.com/watch?v=k9u40DxhTTk)
-
-**Under the Hood**
-
-- [File Management — Medium](https://medium.com/@ayushkalathiya50/file-management-in-python-6613c0b57a85)
-- [Garbage Collection — GeeksforGeeks](https://www.geeksforgeeks.org/python/garbage-collection-python/)
-- [Memory Management — GeeksforGeeks](https://www.geeksforgeeks.org/python/memory-management-in-python/)
-- [Does Python Have Pointers — Ned Batchelder](https://nedbatchelder.com/blog/202403/does_python_have_pointers)
-- [Python Variables Are Pointers — Medium](https://medium.com/analytics-vidhya/python-variables-are-pointers-not-containers-608644af9131)
-
-**Big O**
-
-- [What Is Big O — Towards Data Science](https://towardsdatascience.com/what-is-big-o-notation-and-why-you-should-care-5638895a1693/)
-- [Big O Practical Guide — Medium](https://medium.com/@rozy.sinha2711/understanding-big-o-notation-a-practical-guide-for-developers-45fcbbb5e84b)
+```
+=== Library Management System ===
+1. Add Book
+2. Remove Book
+3. Show Report
+4. Save Library
+5. Load Library
+6. Exit
+```
 
 ---
 
-## Next
+## Swapping Dependencies
 
-SOLID principles
+To switch storage or notifier — one line change in `frontend.py`:
+
+```python
+# Swap storage
+file_manager = JSONFileManagement()   # or CSVFileManagement()
+
+# Swap notifier
+notification_service = EmailNotificationService()  # or SMSNotificationService()
+```
+
+Zero changes to `backend.py`. That's the point.
+
+---
+
+## Honest Weaknesses
+
+- No duplicate book detection
+- Frontend input validation is minimal (bad year input will crash)
+- No unit tests
+
+---
+
+## Verdict from the Judge (Claude, Anthropic)
+
+### Where they got it wrong — every single time:
+
+1. **Duplicate methods** — wrote `add_book` and `remove_book` twice in `Library`. Python silently killed the first one. Didn't know that.
+
+2. **`remove_book` was broken** — compared objects by identity not value. Would never find a book. Missing `__eq__` meant two identical books were strangers to each other.
+
+3. **`print()` inside backend** — first version of notifiers had `print()` right in the backend. Direct violation of the entire frontend/backend split.
+
+4. **`LibraryService` inherited `Library`** — used inheritance where composition was needed. `LibraryService` IS NOT a `Library`. Took a full round of feedback to fix.
+
+5. **`LibraryService` had no methods** — built the class, injected dependencies, then left it empty. A shell with nothing inside.
+
+6. **`ReportGenerator` missing** — forgot it existed for multiple rounds even though it was in the original requirements.
+
+7. **`__hash__` missing** — defined `__eq__` without knowing Python automatically breaks `__hash__` when you do that.
+
+8. **Imports inside methods** — `import csv` and `import json` buried inside every method instead of top of file. Basic Python practice missed.
+
+9. **`generate_report` called `.get_all_books()`on a `Library`** — that method doesn't exist on `Library`. Called it three different wrong ways across three submissions before it was fixed.
+
+10. **Year hardcoded as 2026 in setter** — added `DEFAULT_CURRENT_YEAR` to `__init__` then forgot to update the setter. Same bug, two places.
+
+### Bottom line:
+
+Got there. But nothing was right the first time.
+Every single class had at least one mistake on first submission.
+That's not an insult — that's the job. You fixed every one of them.
+
+---
+
+_Task designed and judged by Claude (Anthropic) — Level 1_
