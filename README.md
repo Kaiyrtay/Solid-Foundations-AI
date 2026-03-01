@@ -1,6 +1,6 @@
-# Student Grade Management System
+# E-Commerce Order Processing System
 
-### SOLID Principles in Python — Level 2 Challenge
+### SOLID Principles in Python — Level 3 (Final)
 
 ---
 
@@ -11,27 +11,27 @@ The task was designed and judged by Claude (Anthropic).
 
 ### Task Requirements (as given):
 
-- Build a console-based Student Grade Management System
-- Add students, add grades, calculate averages, evaluate pass/fail
-- Support multiple export types: JSON and TXT
-- Send a notification when a student fails
+- Build a console-based E-Commerce Order Processing System
+- Add products, register customers, create and process orders
+- Apply discount strategies, choose shipping methods, process payments
+- Validate orders, calculate totals with full breakdown
+- Generate invoices, export to JSON or TXT
+- Send notifications on confirmed orders
+- Update stock and loyalty points after successful orders
 - Split into `backend.py` (zero console) and `frontend.py` (zero logic)
-- `Student` holds grades — `Grade` is its own class
-- `GradeCalculator` is a separate class — `Student` does not calculate its own average
-- `PassFailEvaluator` is a separate class — calculator does not decide pass/fail
-- Dependencies must be injected — nothing hardcoded
+- Every dependency injected — nothing hardcoded
 
 ---
 
 ## SOLID Breakdown
 
-| Principle                     | Where it lives                                                                  | How                                                                                 |
-| ----------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| **S** — Single Responsibility | `Student`, `Grade`, `GradeCalculator`, `PassFailEvaluator`, `ReportGenerator`   | Each class has one job — student holds data, calculator computes, evaluator decides |
-| **O** — Open/Closed           | `Export`, `NotificationService`                                                 | Add `CSVExport` or `SlackNotifier` without touching existing classes                |
-| **L** — Liskov Substitution   | `TXTExport`, `JSONExport`, `EmailNotificationService`, `SMSNotificationService` | Any export or notifier swaps in without breaking the system                         |
-| **I** — Interface Segregation | `Export`, `NotificationService`                                                 | Interfaces are lean — exporters only export, notifiers only notify                  |
-| **D** — Dependency Inversion  | `PassFailEvaluator`, `ReportGenerator`, `TXTExport`                             | All receive their dependencies — nothing hardcoded inside                           |
+| Principle                     | Where it lives                                                                                                                                             | How                                                                                           |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| **S** — Single Responsibility | `Product`, `Customer`, `OrderItem`, `Order`, `PriceCalculator`, `OrderValidator`, `InvoiceGenerator`, `InventoryService`, `LoyaltyService`, `OrderService` | Every class has one job. Data classes hold data. Services do work. Orchestrator orchestrates. |
+| **O** — Open/Closed           | `DiscountStrategy`, `ShippingStrategy`, `PaymentProcessor`, `Export`, `NotificationService`                                                                | Add any new strategy or service with one new class. Zero edits to existing code.              |
+| **L** — Liskov Substitution   | All strategy and service implementations                                                                                                                   | Every concrete class fulfills its contract. Any swap works without breaking anything.         |
+| **I** — Interface Segregation | All ABCs                                                                                                                                                   | Every interface has exactly one method. No class implements what it doesn't need.             |
+| **D** — Dependency Inversion  | `PriceCalculator`, `InvoiceGenerator`, `OrderService`                                                                                                      | All 8 dependencies injected into `OrderService`. Nothing hardcoded anywhere in backend.       |
 
 ---
 
@@ -39,7 +39,7 @@ The task was designed and judged by Claude (Anthropic).
 
 ```
 ├── backend.py      # All logic — zero print(), zero input()
-├── decorators.py   # Reusable validation decorator for string setters
+├── decorators.py   # Reusable validation decorators
 └── frontend.py     # All console interaction — zero business logic
 ```
 
@@ -54,66 +54,65 @@ python frontend.py
 ### Menu:
 
 ```
-=== Student Management System ===
-1. Add Student
-2. Add Grade to Student
-3. Show Student Report
-4. Export Report (TXT/JSON)
-5. Exit
+=== E-Commerce Management System ===
+1. Add Product
+2. Add Customer
+3. Create Order
+4. Process Order
+5. Show Customer Info
+6. Show Product Info
+7. Exit
+8. Export Order/Invoice
 ```
 
 ---
 
 ## Swapping Dependencies
 
-To switch export format or notifier — one line change in `frontend.py`:
+One line in `frontend.py`. Zero changes to `backend.py`:
 
 ```python
-# Swap notifier
-notifier = EmailNotificationService()  # or SMSNotificationService()
-
-# Swap export format
-exporter = TXTExport(report_generator)  # or JSONExport()
+discount_strategy = PercentageDiscount(10)  # or FlatDiscount, LoyaltyDiscount, NoDiscount
+shipping_strategy = ExpressShipping()        # or StandardShipping, FreeShipping
+payment_processor = PayPalPayment()          # or CreditCardPayment
+notifier = SMSNotificationService()          # or EmailNotificationService
+exporter = JSONExport()                      # or TXTExport
 ```
-
-Zero changes to `backend.py`. That's the point.
 
 ---
 
 ## Honest Weaknesses
 
-- No persistence — all students are lost on exit
-- Frontend input validation is minimal (non-numeric score input will crash)
+- No persistence — all data lost on exit
+- Frontend uses plain dicts for product and customer registries instead of proper registry classes
+- Input validation in frontend is minimal — bad input types will crash
 - No unit tests
 
 ---
 
 ## Verdict from the Judge (Claude, Anthropic)
 
-### What they got right — all of it:
+### Did they get in touch with SOLID?
 
-1. **Clean class separation** — `Student` has zero calculation logic. `GradeCalculator`, `PassFailEvaluator`, and `ReportGenerator` are genuinely separate with proper dependency injection throughout.
+Partially.
 
-2. **`Grade` is a real class** — not a dict, not a tuple, not a raw number. Proper validation on both `subject` and `score`. Done right.
+The concepts landed. The ideas are there. But there is still a gap between understanding something and consistently applying it without mistakes. The concept lives in the head — it does not fully live in the hands yet.
 
-3. **`StudentRegistry` is a proper class** — state is encapsulated in the frontend where it belongs. Not a global variable.
-
-4. **Notification system works end to end** — `NotificationService` is abstract, `EmailNotificationService` and `SMSNotificationService` both implement it, the notifier is injected in frontend and called when a student fails a subject.
-
-5. **Both exporters are complete** — `TXTExport` takes a `ReportGenerator` via injection and writes the full formatted report. `JSONExport` writes structured data. Both implement `Export`. Either swaps in with one line.
-
-6. **`str_not_empty_validation` decorator** — reusable, extracted to its own file, applied consistently across `Student` and `Grade` setters.
-
-7. **Frontend/backend split is clean** — zero `print()` or `input()` in backend. Zero logic in frontend. The line was drawn and held the entire way through.
-
-### Where they got it wrong:
-
-Nothing. This submission is complete and correct.
-
-### Bottom line:
-
-Every requirement met. Every SOLID principle applied correctly. The architecture is clean, the dependencies flow the right direction, and the code does what it says it does. This is what Level 2 looks like when it's done.
+That gap closes with more practice. Not with more reading.
 
 ---
 
-_Task designed and judged by Claude (Anthropic) — Level 2_
+## Grade.
+
+78/100.
+Three real mistakes. All implementation, none architectural. The design was right throughout. The principles were understood and applied correctly where it actually matters — the hard stuff, the traps, the boundaries between classes.
+
+<br>It means two different things went wrong in this challenge — design mistakes and implementation mistakes.
+
+- Design is the thinking. Where does this class go, what is its job, who depends on who, how do the pieces connect. That's the SOLID part. You got this right. OrderService clean from day one, no logic leaking into data classes, all the right abstractions in the right places.
+- Implementation is the execution. Actually writing the code correctly after the thinking is done. That's where the three mistakes were — price not added to Product, InvoiceGenerator missing the injection, the dict/float mismatch. Not wrong thinking. Just things that slipped when writing.
+  <br>So the verdict is — your understanding of SOLID is solid. Your hands just need more reps to match your head.
+
+---
+
+_Task designed and judged by Claude (Anthropic) — Level 3 (Final)_

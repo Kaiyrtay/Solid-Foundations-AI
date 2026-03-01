@@ -1,0 +1,234 @@
+# SOLID Principles in Python — Level 3 (Final)
+# E-Commerce Order Processing System
+# Designed and judged by Claude (Anthropic)
+
+═══════════════════════════════════════════════════════
+  LEVEL 3 — THE CONCLUSION
+  Same rules.
+═══════════════════════════════════════════════════════
+
+Level 3 is where the principles stop being obvious.
+The traps are subtle. The wrong choices look reasonable.
+The boundaries are harder to see.
+
+You pass when every principle holds under pressure —
+not just in the easy spots.
+
+───────────────────────────────────────────────────────
+  WHAT YOU'RE BUILDING
+───────────────────────────────────────────────────────
+
+A console-based E-Commerce Order Processing System.
+Backend and frontend. 
+
+Zero print() in backend.
+Zero logic in frontend.
+This is non-negotiable.
+
+───────────────────────────────────────────────────────
+  WHAT IT MUST DO
+───────────────────────────────────────────────────────
+
+1.  Add products (name, price, category, stock quantity)
+2.  Register customers (name, customer_id, loyalty points)
+3.  Create an order for a customer
+4.  Add items to an order (product + quantity)
+5.  Apply a discount strategy to an order
+6.  Choose a shipping method
+7.  Validate the order (stock available, order not empty)
+8.  Calculate the total price (subtotal + discount + shipping)
+9.  Process payment
+10. Generate and display an invoice
+11. Export the invoice (JSON or TXT)
+12. Send a notification when an order is confirmed
+13. Update stock after a successful order
+14. Update customer loyalty points after a successful order
+
+───────────────────────────────────────────────────────
+  THE CLASSES — READ THIS CAREFULLY
+───────────────────────────────────────────────────────
+
+Every class listed here must exist. No merging allowed.
+
+  Product
+    name, price, category, stock_quantity
+    Holds data. Does nothing else.
+
+  Customer
+    name, customer_id, loyalty_points
+    Holds data. Does nothing else.
+
+  OrderItem
+    product, quantity
+    One line item. Not a dict. Not a tuple.
+
+  Order
+    customer, list of OrderItems
+    Holds the order structure. Zero calculation logic.
+
+  DiscountStrategy  ← ABC
+    calculate_discount(subtotal) → float
+    Implementations: PercentageDiscount, FlatDiscount,
+                     LoyaltyDiscount, NoDiscount
+
+  ShippingStrategy  ← ABC
+    calculate_shipping(order) → float
+    Implementations: StandardShipping, ExpressShipping,
+                     FreeShipping
+
+  PaymentProcessor  ← ABC
+    process_payment(amount) → bool
+    Implementations: CreditCardProcessor, PayPalProcessor
+
+  PriceCalculator
+    Takes a DiscountStrategy and ShippingStrategy — injected.
+    calculate_total(order) → dict with subtotal, discount,
+                                        shipping, total
+    No strategy logic inside. Delegates entirely.
+
+  OrderValidator
+    validate(order) → raises or passes
+    Checks: order is not empty, sufficient stock for each item.
+    Separate class. Not inside Order. Not inside OrderService.
+
+  InventoryService
+    update_stock(order) — reduces stock after confirmed order
+    Separate from Product. Product holds data, this does the work.
+
+  LoyaltyService
+    update_points(customer, total) — adds points after order
+    Separate from Customer. Same reason.
+
+  InvoiceGenerator
+    Takes PriceCalculator — injected.
+    generate_invoice(order) → formatted string
+    Nothing else.
+
+  OrderService
+    The orchestrator. Injected with:
+      validator, calculator, payment_processor,
+      invoice_generator, inventory_service,
+      loyalty_service, notifier, exporter
+    process_order(order) — calls everything in sequence.
+    Does NOT implement any of that logic itself.
+
+  Export  ← ABC
+    export(order, invoice_text) → filename string
+    Implementations: JSONExport, TXTExport
+
+  NotificationService  ← ABC
+    send_notification(message) → string
+    Implementations: EmailNotificationService,
+                     SMSNotificationService
+
+───────────────────────────────────────────────────────
+  THE TRAPS — WHERE LEVEL 3 IS DIFFERENT
+───────────────────────────────────────────────────────
+
+These are the exact places where the wrong choice
+looks completely reasonable. Read them.
+
+TRAP 1 — Discount logic inside Order or PriceCalculator
+  It feels natural. It's wrong.
+  Discount is a strategy. It changes independently.
+  A new discount type should require zero edits
+  to Order, PriceCalculator, or anything else.
+
+TRAP 2 — Validation inside OrderService
+  OrderService orchestrates. It does not validate.
+  Putting if statements for stock checks inside
+  process_order() is a Single Responsibility violation.
+  OrderValidator exists for exactly this reason.
+
+TRAP 3 — Stock update inside Product
+  Product holds data. It does not update itself.
+  product.stock -= quantity inside a setter is wrong.
+  InventoryService does the work. Product holds the number.
+
+TRAP 4 — Loyalty points update inside Customer
+  Same as above. Customer.add_points() that contains
+  business rules is a violation.
+  LoyaltyService decides the rules. Customer holds the value.
+
+TRAP 5 — OrderService inheriting anything
+  OrderService IS NOT an Order.
+  OrderService IS NOT an InvoiceGenerator.
+  If you use inheritance here, you've already failed.
+  Composition only.
+
+TRAP 6 — InvoiceGenerator without injected PriceCalculator
+  If InvoiceGenerator creates its own PriceCalculator
+  internally, you cannot swap discount or shipping
+  strategies without touching InvoiceGenerator.
+  That breaks OCP. Inject it.
+
+TRAP 7 — PaymentProcessor returning nothing
+  process_payment() must return a bool.
+  OrderService needs to know if it succeeded.
+  A method that just pretends and returns None
+  means your order flow has no failure handling.
+
+───────────────────────────────────────────────────────
+  YOU PASS WHEN
+───────────────────────────────────────────────────────
+
+→ I can add a new discount type (e.g. SeasonalDiscount)
+  by creating one class. Zero edits anywhere else.
+
+→ I can swap StandardShipping for ExpressShipping
+  in one line in frontend.py.
+
+→ I can swap CreditCardProcessor for PayPalProcessor
+  in one line in frontend.py.
+
+→ OrderService.process_order() contains zero
+  if/else business logic of its own.
+
+→ Product and Customer are pure data holders.
+  No methods that contain business rules.
+
+→ Backend has zero print() or input().
+
+→ Frontend has zero logic.
+
+→ All dependencies flow inward via injection.
+  Nothing is hardcoded inside any class.
+
+───────────────────────────────────────────────────────
+  WHAT GETS YOU FAILED IMMEDIATELY
+───────────────────────────────────────────────────────
+
+✗ Any discount logic inside Order or PriceCalculator
+✗ Validation logic inside OrderService
+✗ OrderService inheriting from any class
+✗ Product or Customer modifying their own data
+  through business logic methods
+✗ InvoiceGenerator creating its own PriceCalculator
+✗ Any class importing another concrete class
+  instead of depending on its abstraction
+✗ print() anywhere in backend.py
+
+───────────────────────────────────────────────────────
+  STRUCTURE
+───────────────────────────────────────────────────────
+
+backend.py    — all logic, zero console
+frontend.py   — all console, zero logic
+decorators.py — validation decorators (carry it forward)
+
+───────────────────────────────────────────────────────
+  THE STANDARD
+───────────────────────────────────────────────────────
+
+Level 1 was about learning the pattern.
+Level 2 was about applying it under pressure.
+Level 3 is about understanding it well enough
+to see the traps before you fall into them.
+
+The architect designs the system.
+The engineer builds it without cutting corners.
+Be both.
+
+═══════════════════════════════════════════════════════
+  Designed and judged by Claude (Anthropic) — Level 3
+═══════════════════════════════════════════════════════
