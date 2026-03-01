@@ -1,6 +1,6 @@
-# Library Management System
+# Student Grade Management System
 
-### SOLID Principles in Python — Level 1 Challenge
+### SOLID Principles in Python — Level 2 Challenge
 
 ---
 
@@ -11,34 +11,36 @@ The task was designed and judged by Claude (Anthropic).
 
 ### Task Requirements (as given):
 
-- Build a console-based Library Management System
-- Add, remove, save, load books
-- Support multiple storage types: JSON and CSV
-- Support multiple notification types: Email and SMS
+- Build a console-based Student Grade Management System
+- Add students, add grades, calculate averages, evaluate pass/fail
+- Support multiple export types: JSON and TXT
+- Send a notification when a student fails
 - Split into `backend.py` (zero console) and `frontend.py` (zero logic)
-- Every class must have one reason to change
+- `Student` holds grades — `Grade` is its own class
+- `GradeCalculator` is a separate class — `Student` does not calculate its own average
+- `PassFailEvaluator` is a separate class — calculator does not decide pass/fail
 - Dependencies must be injected — nothing hardcoded
 
 ---
 
 ## SOLID Breakdown
 
-| Principle                     | Where it lives                                                             | How                                                                         |
-| ----------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| **S** — Single Responsibility | `Book`, `Library`, `ReportGenerator`, `LibraryService`, notifiers, storage | Every class has exactly one job                                             |
-| **O** — Open/Closed           | `FileManagement`, `NotificationService`                                    | Add `CSVFileManagement` or `SlackNotifier` with zero edits to existing code |
-| **L** — Liskov Substitution   | `CSVFileManagement`, `JSONFileManagement`                                  | Either storage swaps in without breaking anything                           |
-| **I** — Interface Segregation | `FileManagement`, `NotificationService`                                    | Interfaces are lean — no class implements what it doesn't need              |
-| **D** — Dependency Inversion  | `LibraryService`                                                           | Never hardcodes storage or notifier — both injected from frontend           |
+| Principle                     | Where it lives                                                                  | How                                                                                 |
+| ----------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| **S** — Single Responsibility | `Student`, `Grade`, `GradeCalculator`, `PassFailEvaluator`, `ReportGenerator`   | Each class has one job — student holds data, calculator computes, evaluator decides |
+| **O** — Open/Closed           | `Export`, `NotificationService`                                                 | Add `CSVExport` or `SlackNotifier` without touching existing classes                |
+| **L** — Liskov Substitution   | `TXTExport`, `JSONExport`, `EmailNotificationService`, `SMSNotificationService` | Any export or notifier swaps in without breaking the system                         |
+| **I** — Interface Segregation | `Export`, `NotificationService`                                                 | Interfaces are lean — exporters only export, notifiers only notify                  |
+| **D** — Dependency Inversion  | `PassFailEvaluator`, `ReportGenerator`, `TXTExport`                             | All receive their dependencies — nothing hardcoded inside                           |
 
 ---
 
 ## Project Structure
 
 ```
-├── backend.py     # All logic — zero print(), zero input()
-├── frontend.py    # All console interaction — zero business logic
-└── README.md
+├── backend.py      # All logic — zero print(), zero input()
+├── decorators.py   # Reusable validation decorator for string setters
+└── frontend.py     # All console interaction — zero business logic
 ```
 
 ---
@@ -52,27 +54,26 @@ python frontend.py
 ### Menu:
 
 ```
-=== Library Management System ===
-1. Add Book
-2. Remove Book
-3. Show Report
-4. Save Library
-5. Load Library
-6. Exit
+=== Student Management System ===
+1. Add Student
+2. Add Grade to Student
+3. Show Student Report
+4. Export Report (TXT/JSON)
+5. Exit
 ```
 
 ---
 
 ## Swapping Dependencies
 
-To switch storage or notifier — one line change in `frontend.py`:
+To switch export format or notifier — one line change in `frontend.py`:
 
 ```python
-# Swap storage
-file_manager = JSONFileManagement()   # or CSVFileManagement()
-
 # Swap notifier
-notification_service = EmailNotificationService()  # or SMSNotificationService()
+notifier = EmailNotificationService()  # or SMSNotificationService()
+
+# Swap export format
+exporter = TXTExport(report_generator)  # or JSONExport()
 ```
 
 Zero changes to `backend.py`. That's the point.
@@ -81,42 +82,38 @@ Zero changes to `backend.py`. That's the point.
 
 ## Honest Weaknesses
 
-- No duplicate book detection
-- Frontend input validation is minimal (bad year input will crash)
+- No persistence — all students are lost on exit
+- Frontend input validation is minimal (non-numeric score input will crash)
 - No unit tests
 
 ---
 
 ## Verdict from the Judge (Claude, Anthropic)
 
-### Where they got it wrong — every single time:
+### What they got right — all of it:
 
-1. **Duplicate methods** — wrote `add_book` and `remove_book` twice in `Library`. Python silently killed the first one. Didn't know that.
+1. **Clean class separation** — `Student` has zero calculation logic. `GradeCalculator`, `PassFailEvaluator`, and `ReportGenerator` are genuinely separate with proper dependency injection throughout.
 
-2. **`remove_book` was broken** — compared objects by identity not value. Would never find a book. Missing `__eq__` meant two identical books were strangers to each other.
+2. **`Grade` is a real class** — not a dict, not a tuple, not a raw number. Proper validation on both `subject` and `score`. Done right.
 
-3. **`print()` inside backend** — first version of notifiers had `print()` right in the backend. Direct violation of the entire frontend/backend split.
+3. **`StudentRegistry` is a proper class** — state is encapsulated in the frontend where it belongs. Not a global variable.
 
-4. **`LibraryService` inherited `Library`** — used inheritance where composition was needed. `LibraryService` IS NOT a `Library`. Took a full round of feedback to fix.
+4. **Notification system works end to end** — `NotificationService` is abstract, `EmailNotificationService` and `SMSNotificationService` both implement it, the notifier is injected in frontend and called when a student fails a subject.
 
-5. **`LibraryService` had no methods** — built the class, injected dependencies, then left it empty. A shell with nothing inside.
+5. **Both exporters are complete** — `TXTExport` takes a `ReportGenerator` via injection and writes the full formatted report. `JSONExport` writes structured data. Both implement `Export`. Either swaps in with one line.
 
-6. **`ReportGenerator` missing** — forgot it existed for multiple rounds even though it was in the original requirements.
+6. **`str_not_empty_validation` decorator** — reusable, extracted to its own file, applied consistently across `Student` and `Grade` setters.
 
-7. **`__hash__` missing** — defined `__eq__` without knowing Python automatically breaks `__hash__` when you do that.
+7. **Frontend/backend split is clean** — zero `print()` or `input()` in backend. Zero logic in frontend. The line was drawn and held the entire way through.
 
-8. **Imports inside methods** — `import csv` and `import json` buried inside every method instead of top of file. Basic Python practice missed.
+### Where they got it wrong:
 
-9. **`generate_report` called `.get_all_books()`on a `Library`** — that method doesn't exist on `Library`. Called it three different wrong ways across three submissions before it was fixed.
-
-10. **Year hardcoded as 2026 in setter** — added `DEFAULT_CURRENT_YEAR` to `__init__` then forgot to update the setter. Same bug, two places.
+Nothing. This submission is complete and correct.
 
 ### Bottom line:
 
-Got there. But nothing was right the first time.
-Every single class had at least one mistake on first submission.
-That's not an insult — that's the job. You fixed every one of them.
+Every requirement met. Every SOLID principle applied correctly. The architecture is clean, the dependencies flow the right direction, and the code does what it says it does. This is what Level 2 looks like when it's done.
 
 ---
 
-_Task designed and judged by Claude (Anthropic) — Level 1_
+_Task designed and judged by Claude (Anthropic) — Level 2_

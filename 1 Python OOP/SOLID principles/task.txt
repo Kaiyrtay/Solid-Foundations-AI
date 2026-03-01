@@ -31,3 +31,36 @@ I can swap JSON storage for CSV storage with one line change
 I can add a new notifier without touching existing code
 Every class has exactly one reason to change
 
+Level 2 — Same Rules, Harder Fight
+
+What you're building:
+A console-based Student Grade Management System. Backend and frontend. Same rules — zero print() in backend, zero logic in frontend.
+
+What it must do:
+
+Add a student (name, student ID)
+Add a grade for a student (subject, score)
+Calculate average grade per student
+Pass or fail a student based on average (passing score = 60)
+Generate a full report of all students and their grades
+Export report to JSON and TXT file
+Send notification when a student fails
+
+
+Where it gets harder than Level 1:
+
+A Student holds grades. A Grade is its own class. They are not the same thing — don't mix them.
+GradeCalculator is a separate class. Student does not calculate its own average — that violates S.
+PassFailEvaluator is a separate class. GradeCalculator does not decide pass or fail — that's a different job.
+Exporting to JSON and TXT must be swappable without touching anything else — O principle, same as Level 1 but you know what happens if you get it wrong.
+ReportGenerator takes students and produces a string. Nothing else.
+NotificationService same pattern as Level 1 — abstract, injectable.
+
+
+You pass when:
+
+I can swap TXT export for JSON export in one line
+Student class has zero calculation logic
+Adding a new evaluator rule (e.g. pass score = 70) requires zero edits to existing classes
+Backend has zero print() or input()
+Frontend has zero logic
