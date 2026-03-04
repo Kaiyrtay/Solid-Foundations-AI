@@ -29,3 +29,16 @@ Below are the materials I’ve reviewed:
 - Big O:
     https://towardsdatascience.com/what-is-big-o-notation-and-why-you-should-care-5638895a1693/
     https://medium.com/@rozy.sinha2711/understanding-big-o-notation-a-practical-guide-for-developers-45fcbbb5e84b
+
+##################### Week 3 #####################
+- Magic methods:
+    https://www.tutorialsteacher.com/python/magic-methods-in-python
+    https://realpython.com/python-magic-methods/
+- Iterator / Iterable:
+    https://www.youtube.com/watch?v=hgQD2znCc_I
+    https://discuss.python.org/t/what-is-iterators-and-generators/105762/3
+- Generators:
+    https://www.w3schools.com/python/python_generators.asp
+    https://realpython.com/introduction-to-python-generators/
+- SOLID:
+    https://www.youtube.com/watch?v=Dx2SE4hYy4g
