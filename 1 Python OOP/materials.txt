@@ -42,3 +42,5 @@ Below are the materials I’ve reviewed:
     https://realpython.com/introduction-to-python-generators/
 - SOLID:
     https://www.youtube.com/watch?v=Dx2SE4hYy4g
+- Unit test:
+    https://realpython.com/python-unittest/
