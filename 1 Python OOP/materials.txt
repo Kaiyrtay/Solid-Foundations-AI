@@ -44,3 +44,10 @@ Below are the materials I’ve reviewed:
     https://www.youtube.com/watch?v=Dx2SE4hYy4g
 - Unit test:
     https://realpython.com/python-unittest/
+
+##################### Week 4 #####################
+- Prime Numbers:
+    https://www.geeksforgeeks.org/maths/prime-numbers/
+    https://brilliant.org/wiki/prime-numbers/
+- Fibonacci sequence:
+    https://en.wikipedia.org/wiki/Fibonacci_sequence
