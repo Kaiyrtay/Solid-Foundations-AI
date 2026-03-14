@@ -51,3 +51,6 @@ Below are the materials I’ve reviewed:
     https://brilliant.org/wiki/prime-numbers/
 - Fibonacci sequence:
     https://en.wikipedia.org/wiki/Fibonacci_sequence
+- Context Manager
+    https://levelup.gitconnected.com/decoding-python-magic-enter-and-exit-bef77457606f
+    https://realpython.com/python-with-statement/

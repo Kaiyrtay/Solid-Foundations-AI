@@ -1,33 +1,23 @@
-# Generators
-
-A collection of Python generators for primes, Fibonacci, and file reading.
+# Python Concepts
 
 ---
 
-## Functions
+## Context Manager
 
-### `is_prime(number)`
+A custom file manager using the `with` statement. Automatically closes the file on exit, even if an exception occurs.
 
-Returns `True` if the number is prime, `False` otherwise.
+Supported modes: `r`, `r+`, `rb`, `rb+`, `w`, `w+`, `wb`, `wb+`, `a`, `a+`, `ab`, `ab+`
 
-### `prime_numbers()`
+### Magic Methods
 
-Infinite generator that yields prime numbers one by one.
-Three versions written — the active one is the most efficient, dividing only by previously found primes.
-
-### `fibonacci()`
-
-Infinite generator that yields Fibonacci numbers one by one.
-Three versions written — the active one uses `yield` to stream values endlessly.
-
-### `filereader(filename)`
-
-Yields each line of a file with whitespace stripped.
+- `__enter__` — opens the file
+- `__exit__` — closes the file, re-raises exceptions with line number
+- `__str__` — human-readable representation
+- `__repr__` — developer representation
 
 ---
 
 ## References
 
-- [GeeksforGeeks — Prime Numbers](https://www.geeksforgeeks.org/maths/prime-numbers/)
-- [Brilliant — Prime Numbers](https://brilliant.org/wiki/prime-numbers/)
-- [Wikipedia — Fibonacci Sequence](https://en.wikipedia.org/wiki/Fibonacci_sequence)
+- [Context Managers — LevelUp](https://levelup.gitconnected.com/decoding-python-magic-enter-and-exit-bef77457606f)
+- [Python `with` Statement — RealPython](https://realpython.com/python-with-statement/)
