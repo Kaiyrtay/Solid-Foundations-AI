@@ -54,3 +54,6 @@ Below are the materials I’ve reviewed:
 - Context Manager
     https://levelup.gitconnected.com/decoding-python-magic-enter-and-exit-bef77457606f
     https://realpython.com/python-with-statement/
+- Data classes
+    https://realpython.com/ref/stdlib/dataclasses/
+    https://realpython.com/ref/builtin-functions/classmethod/

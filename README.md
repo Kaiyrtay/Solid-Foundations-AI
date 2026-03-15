@@ -1,23 +1,63 @@
-# Python Concepts
+# Log Analysis Tool
+
+A lightweight Python tool for parsing and analyzing Android log files.
 
 ---
 
-## Context Manager
+## Project Structure
 
-A custom file manager using the `with` statement. Automatically closes the file on exit, even if an exception occurs.
+```
+Log Analysis Tool/
+├── datasets/
+│   ├── Android.log
+│   └── README.md
+└── __init__.py
+```
 
-Supported modes: `r`, `r+`, `rb`, `rb+`, `w`, `w+`, `wb`, `wb+`, `a`, `a+`, `ab`, `ab+`
+---
 
-### Magic Methods
+## What It Does
 
-- `__enter__` — opens the file
-- `__exit__` — closes the file, re-raises exceptions with line number
-- `__str__` — human-readable representation
-- `__repr__` — developer representation
+Reads a raw Android `.log` file line by line, parses each line into a structured `LogEntry`, and lets you compare two loading approaches — generator vs list.
+
+---
+
+## How It Works
+
+### LogEntry
+
+Parses a single raw log line into typed fields: `date`, `time`, `pid`, `tid`, `level`, `tag`, `message`
+
+- `parse()` — takes a raw string, returns a `LogEntry` or `None` if the line doesn't match
+- `severity` — returns the numeric value of the log level (`V=0` up to `F=5`)
+- `__str__` — prints the entry in a readable bordered format
+
+### Log Reader
+
+A generator that opens the file and yields one `LogEntry` at a time — never loads the whole file into memory.
+
+### Approaches Compared
+
+| Approach  | How                         | Memory |
+| --------- | --------------------------- | ------ |
+| Generator | streams one entry at a time | low    |
+| List      | loads all entries at once   | high   |
+
+Both are timed and memory-tracked using decorators.
+
+---
+
+## Usage
+
+```python
+FILE = "./datasets/Android.log"
+count = approach_generator(FILE)
+count = approach_list(FILE)
+```
 
 ---
 
 ## References
 
-- [Context Managers — LevelUp](https://levelup.gitconnected.com/decoding-python-magic-enter-and-exit-bef77457606f)
-- [Python `with` Statement — RealPython](https://realpython.com/python-with-statement/)
+- [Data Classes — RealPython](https://realpython.com/ref/stdlib/dataclasses/)
+- [classmethod — RealPython](https://realpython.com/ref/builtin-functions/classmethod/)
