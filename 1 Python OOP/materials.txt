@@ -57,3 +57,30 @@ Below are the materials I’ve reviewed:
 - Data classes
     https://realpython.com/ref/stdlib/dataclasses/
     https://realpython.com/ref/builtin-functions/classmethod/
+
+##################### Week 5 #####################
+- *args and **kwargs:
+    https://www.w3schools.com/python/python_args_kwargs.asp
+    https://mimo.org/glossary/python/args-kwargs
+- Lambda:
+    https://www.thepythoncodingstack.com/p/whats-all-the-fuss-about-python-lambda-functions
+    https://www.codecademy.com/article/python-lambda-function
+- MAP:
+    https://thecode.media/funktsiya-map-v-python/
+    https://realpython.com/ref/builtin-functions/map/
+    https://realpython.com/python-map-function/
+    https://www.geeksforgeeks.org/python/reduce-in-python/
+    https://en.wikipedia.org/wiki/MapReduce
+- List, dict, set comprehensions:
+    https://pyneng.readthedocs.io/ru/latest/book/08_useful_basics/x_comprehensions.html
+    https://medium.com/@vinodkumargr/list-dictionary-and-set-comprehension-in-python-9823719a67da
+    https://realpython.com/python-set-comprehension/
+    https://realpython.com/python-dictionary-comprehension/?utm_source=realpython&utm_medium=web&utm_campaign=related-post&utm_content=python-set-comprehension
+    https://www.w3schools.com/python/python_tuples.asp
+    How to Choose the Right Data Structure in Python: Lists, Tuples, Sets, or Dicts?:
+    https://www.mygreatlearning.com/blog/choose-right-python-data-structure/
+- Python Try Except:
+    https://serveracademy.com/blog/python-try-except/
+    https://pythonchik.ru/osnovy/python-try-except
+- MYPY:
+    https://hrekov.com/blog/what-is-mypy-how-to-use-it

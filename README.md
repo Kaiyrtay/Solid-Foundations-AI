@@ -1,63 +1,85 @@
-# Log Analysis Tool
+# Week 7–8 — Function Arguments Mastery
 
-A lightweight Python tool for parsing and analyzing Android log files.
+A focused set of Python exercises exploring every combination of function argument signatures.
 
 ---
 
 ## Project Structure
 
 ```
-Log Analysis Tool/
-├── datasets/
-│   ├── Android.log
-│   └── README.md
-└── __init__.py
+Week 7 - 8/
+└── function_arguments_mastery.py
 ```
 
 ---
 
 ## What It Does
 
-Reads a raw Android `.log` file line by line, parses each line into a structured `LogEntry`, and lets you compare two loading approaches — generator vs list.
+Defines and tests functions that accept different combinations of positional and keyword arguments, then applies them in a practical `api_call()` URL builder.
 
 ---
 
-## How It Works
+## Topics Covered
 
-### LogEntry
+### Argument Signatures
 
-Parses a single raw log line into typed fields: `date`, `time`, `pid`, `tid`, `level`, `tag`, `message`
+Step-by-step breakdown of every signature pattern:
 
-- `parse()` — takes a raw string, returns a `LogEntry` or `None` if the line doesn't match
-- `severity` — returns the numeric value of the log level (`V=0` up to `F=5`)
-- `__str__` — prints the entry in a readable bordered format
+| Function                | Signature                        |
+| ----------------------- | -------------------------------- |
+| `test_att`              | single positional arg            |
+| `test_args`             | `*args` only                     |
+| `test_kwargs`           | `**kwargs` only                  |
+| `test_attr_args`        | fixed arg + `*args`              |
+| `test_attr_kwargs`      | fixed arg + `**kwargs`           |
+| `test_args_kwargs`      | `*args` + `**kwargs`             |
+| `test_attr_args_kwargs` | fixed arg + `*args` + `**kwargs` |
 
-### Log Reader
+### Practical Example — `api_call()`
 
-A generator that opens the file and yields one `LogEntry` at a time — never loads the whole file into memory.
-
-### Approaches Compared
-
-| Approach  | How                         | Memory |
-| --------- | --------------------------- | ------ |
-| Generator | streams one entry at a time | low    |
-| List      | loads all entries at once   | high   |
-
-Both are timed and memory-tracked using decorators.
-
----
-
-## Usage
+Builds a URL from a base endpoint, path segments (`*args`), and query parameters (`**kwargs`).
 
 ```python
-FILE = "./datasets/Android.log"
-count = approach_generator(FILE)
-count = approach_list(FILE)
+api_call("https://api.example.com", "users", 42, active=True, page=2)
+# → "https://api.example.com/users/42?active=True&page=2"
 ```
 
 ---
 
 ## References
 
-- [Data Classes — RealPython](https://realpython.com/ref/stdlib/dataclasses/)
-- [classmethod — RealPython](https://realpython.com/ref/builtin-functions/classmethod/)
+**`*args` and `**kwargs`\*\*
+
+- [W3Schools — \*args and \*\*kwargs](https://www.w3schools.com/python/python_args_kwargs.asp)
+- [Mimo — args/kwargs](https://mimo.org/glossary/python/args-kwargs)
+
+**Lambda**
+
+- [The Python Coding Stack — Lambda](https://www.thepythoncodingstack.com/p/whats-all-the-fuss-about-python-lambda-functions)
+- [Codecademy — Lambda](https://www.codecademy.com/article/python-lambda-function)
+
+**map()**
+
+- [thecode.media — map() (RU)](https://thecode.media/funktsiya-map-v-python/)
+- [RealPython — map() reference](https://realpython.com/ref/builtin-functions/map/)
+- [RealPython — map() function](https://realpython.com/python-map-function/)
+- [GeeksforGeeks — reduce()](https://www.geeksforgeeks.org/python/reduce-in-python/)
+- [Wikipedia — MapReduce](https://en.wikipedia.org/wiki/MapReduce)
+
+**List, Dict & Set Comprehensions**
+
+- [PyNEng — Comprehensions (RU)](https://pyneng.readthedocs.io/ru/latest/book/08_useful_basics/x_comprehensions.html)
+- [Medium — List, Dict & Set Comprehensions](https://medium.com/@vinodkumargr/list-dictionary-and-set-comprehension-in-python-9823719a67da)
+- [RealPython — Set comprehension](https://realpython.com/python-set-comprehension/)
+- [RealPython — Dict comprehension](https://realpython.com/python-dictionary-comprehension/)
+- [W3Schools — Tuples](https://www.w3schools.com/python/python_tuples.asp)
+- [MyGreatLearning — Choosing the right data structure](https://www.mygreatlearning.com/blog/choose-right-python-data-structure/)
+
+**try / except**
+
+- [Server Academy — try/except](https://serveracademy.com/blog/python-try-except/)
+- [Pythonchik — try/except (RU)](https://pythonchik.ru/osnovy/python-try-except)
+
+**Mypy**
+
+- [hrekov.com — What is Mypy](https://hrekov.com/blog/what-is-mypy-how-to-use-it)
